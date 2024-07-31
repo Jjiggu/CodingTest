@@ -12,3 +12,4 @@ def solution(s):
                 return False
             
     return len(bracket_stack) == 0
+

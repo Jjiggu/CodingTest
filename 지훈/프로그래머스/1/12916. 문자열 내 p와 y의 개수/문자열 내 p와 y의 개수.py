@@ -1,12 +1,9 @@
-def solution(s):    
-#     count_p = s.count('p')
-#     count_P = s.count('P')
-    
-#     result_p = count_p + count_P
-    
-#     count_y = s.count('y')
-#     count_Y = s.count('Y')
-    
-#     result_y = count_y + count_Y
-    
-    return s.lower().count('p') == s.lower().count('y')
+def solution(s):
+    s = s.lower()
+
+    p_count = s.count("p")
+    y_count = s.count("y")
+
+    return p_count == y_count
+
+    # return s.lower().count('p') == s.lower().count('y')

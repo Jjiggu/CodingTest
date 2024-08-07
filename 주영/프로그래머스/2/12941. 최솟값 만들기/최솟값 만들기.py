@@ -8,3 +8,4 @@ def solution(A, B):
         answer_List.append(num)
     print(answer_List)
     return sum(answer_List)
+

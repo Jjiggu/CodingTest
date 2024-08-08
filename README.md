@@ -34,12 +34,10 @@
 ## 💻 issue 관리
 1. 이슈 생성 : 주영_1일차 / 내용 : 문제번호
 2. 로컬에서 문제 풀이 (백준허브 사용해도 OK) → 내 브랜치
-3. PR생성, #(이슈넘버), 오른쪽 상태 변경(승인인원, 이슈상태)
-    
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/dbe3a90e-b06c-4144-a18c-3da5724c1121/fbb3d99e-2cb1-4b75-8cef-df7050c93982/Untitled.png)
-    
-4. Reviewer 승인 후 main에 merge
-5. issue close
+3. 상태에 맞게 워크플로우 관리
+4. PR생성, #(이슈넘버), 오른쪽 상태 변경(승인인원, 이슈상태)
+5. Reviewer 승인 후 main에 merge
+6. issue close
 
 ## 💻 PR 규칙 및 Commit Message 규칙
 

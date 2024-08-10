@@ -5,7 +5,7 @@ def solution(s):
         n = list(s[i])
         temp = ''
         for j in range(len(n)):
-            if j % 2 == 0:
+            if j&1==0:
                 temp += n[j].upper()
             else:
                 temp += n[j].lower()

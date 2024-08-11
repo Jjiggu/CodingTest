@@ -5,5 +5,6 @@ def solution(arr, divisor):
             answer.append(i)
     answer.sort()
     if len(answer) == 0:
-        answer.append(-1)
-    return answer
+        return [-1]
+    else:
+        return answer.sort()

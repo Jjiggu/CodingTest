@@ -5,3 +5,4 @@ def solution(d, budget):
         if sum(d[:i+1]) > budget:
             return i
     return len(d)
+

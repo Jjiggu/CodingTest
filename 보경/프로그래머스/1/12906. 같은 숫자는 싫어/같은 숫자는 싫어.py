@@ -7,3 +7,4 @@ def solution(arr):
         if i != '':
             answer.append(i)
     return answer
+

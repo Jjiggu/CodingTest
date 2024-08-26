@@ -27,20 +27,4 @@ def solution(s):
     if first_letter != "":
         answer += 1
 
-        
-        # if s[i] == first_letter:
-        #     count += 1
-        #     if count == other_count:
-        #         first_letter = s[i + 1]
-        #         all_count += 1
-        #         break   
-        # elif s[i] != first_letter:
-        #     other_count += 1
-        #     if count == other_count:
-        #         first_letter = s[i + 1]
-        #         all_count += 1
-        #         break   
-        
-        
-    
     return answer

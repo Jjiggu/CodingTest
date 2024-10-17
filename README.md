@@ -63,8 +63,8 @@
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/Jjiggu"><img src="https://i.ibb.co/FYTxKR1/errorcat.png" width="100px;" alt=""/><br /><sub><b>김지훈</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/Ju0011"><img src="https://i.ibb.co/FYTxKR1/errorcat.png" width="100px;" alt=""/><br /><sub><b>박주영</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/seobokyeong0314"><img src="https://i.ibb.co/FYTxKR1/errorcat.png" width="100px;" alt=""/><br /><sub><b>서보경</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/Ju0011"><img src="https://i.ibb.co/FYTxKR1/errorcat.png" width="100px;" alt=""/><br /><sub><b>박주영</b></sub></a><br /><sub><b>탈출</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/seobokyeong0314"><img src="https://i.ibb.co/FYTxKR1/errorcat.png" width="100px;" alt=""/><br /><sub><b>서보경</b></sub></a><br /><sub><b>탈출</b></sub></a><br /></td>
      <tr/>
   </tbody>
 </table>

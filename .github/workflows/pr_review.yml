@@ -35,7 +35,7 @@ jobs:
 
           # 디스코드 봇의 사용자 이름과 아바타 URL 설정
           USERNAME="GitHub Actions Bot"
-          AVATAR_URL="https://github.com/user-attachments/assets/8101d93c-494d-451d-975d-4b3ffb2d59a8.png"  # 원하는 아바타 이미지 URL로 변경하세요
+          AVATAR_URL="https://i.ibb.co/dQKDmNj/test.jpg"  # 원하는 아바타 이미지 URL로 변경하세요
 
           # JSON 형식으로 메시지 구성
           DATA=$(jq -n \

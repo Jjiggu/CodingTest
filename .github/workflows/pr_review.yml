@@ -10,8 +10,7 @@ jobs:
 
     steps:
     - name: Send Discord Notification
-    -  run: >
-          curl -X
-          POST -H 'Content-type:application/json'
-          -d '{"content":"Hello, World!"}'
-          ${{ secrets.DISCORD_WEBHOOK_URL }}
+      run: |
+        curl -X POST -H 'Content-Type: application/json' \
+        -d '{"content":"Hello, World!"}' \
+        ${{ secrets.DISCORD_WEBHOOK_URL }}

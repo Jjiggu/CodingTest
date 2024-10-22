@@ -10,21 +10,8 @@ jobs:
 
     steps:
     - name: Send Discord Notification
-      if: github.event.pull_request.merged == true || github.event.action == 'opened'
-      env:
-        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      run: |
-        PR_TITLE="${{ github.event.pull_request.title }}"
-        PR_USER="${{ github.event.pull_request.user.login }}"
-        PR_ACTION="${{ github.event.action }}"
-        PR_URL="${{ github.event.pull_request.html_url }}"
-        
-        if [ "$PR_ACTION" == "opened" ]; then
-          MESSAGE="📢 Pull Request Created: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
-        else
-          MESSAGE="✅ Pull Request Merged: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
-        fi
-
-        curl -X POST -H "Content-Type: application/json" \
-        -d "{\"content\": \"$MESSAGE\"}" \
-        $DISCORD_WEBHOOK_URL
+    -  run: >
+          curl -X
+          POST -H 'Content-type:application/json'
+          -d '{"content":"Hello, World!"}'
+          ${{ secrets.DISCORD_WEBHOOK_URL }}

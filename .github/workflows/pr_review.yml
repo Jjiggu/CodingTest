@@ -13,7 +13,7 @@ jobs:
         run: sudo apt-get install -y jq
 
       - name: Send Discord Notification
-        run: |
+        run: >
           # PR 정보 가져오기
           prTitle="${{ github.event.pull_request.title }}"
           prUser="${{ github.event.pull_request.user.login }}"

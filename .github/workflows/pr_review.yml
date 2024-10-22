@@ -22,19 +22,19 @@ jobs:
           prMerged="${{ github.event.pull_request.merged }}"
 
           if [ "$prAction" == "opened" ]; then
-            MESSAGE="**(　o=^•ェ•)o　┏━┓  새로운 PR이 도착했습니다!**
+            MESSAGE="**새로운 PR이 도착했습니다!**
             
             - PR 제목: **${prTitle}**
             - 등록한 사람 : **${prUser}**
-            - 리뷰하러 가기 : [클릭]('"${prUrl}"')"
+            - 리뷰하러 가기 : [클릭](${prUrl})"
           elif [ "$prAction" == "closed" ] && [ "$prMerged" == "true" ]; then
-            MESSAGE="**༼ つ ◕_◕ ༽つ  PR이 머지되었습니다!**
+            MESSAGE="**PR이 머지되었습니다!**
             
             - PR 제목: **${prTitle}**
             - 등록한 사람 : **${prUser}**
-            - 리뷰하러 가기 : [클릭]('"${prUrl}"')"
+            - 리뷰하러 가기 : [클릭](${prUrl})"
           elif [ "$prAction" == "closed" ]; then
-            MESSAGE="**w(ﾟДﾟ)w  PR이 닫혔습니다**
+            MESSAGE="**PR이 닫혔습니다**
             
             - PR 제목: **${prTitle}**
             - 등록한 사람 : **${prUser}**
@@ -44,7 +44,7 @@ jobs:
             
             - PR 제목: **${prTitle}**
             - 등록한 사람 : **${prUser}**
-            - 리뷰하러 가기 : [클릭]('"${prUrl}"')"
+            - 리뷰하러 가기 : [클릭](${prUrl})"
             [PR 확인](${prUrl})"
           else
             MESSAGE="❓  알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}.\nLink: ${prUrl}"

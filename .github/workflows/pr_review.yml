@@ -10,18 +10,22 @@ jobs:
 
     steps:
       - name: Send Discord Notification
-        env:
-          DATA: |
-            {
-              "embeds": [
-                {
-                  "title": "23-Munbin-Lee",
-                  "description": "새로운 PR이 도착했습니다!\n\nhttps://www.acmicpc.net/problem/1756",
-                  "url": "https://github.com/Jjiggu/CodingTest/pull/171"
-                }
-              ]
-            }
         run: |
+          
+          # PR 정보 가져오기
+          $prTitle = "${{ github.event.pull_request.title }}"
+          $prUser = "${{ github.event.pull_request.user.login }}"
+          $prAction = "${{ github.event.action }}"
+          $prUrl = "${{ github.event.pull_request.html_url }}"
+        
+          if [ "$PR_ACTION" == "opened" ]; then
+            MESSAGE="📢 새로운 PR이 도착했습니다!: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
+          elif [ "$PR_ACTION" == "closed" ]; then
+            MESSAGE="📢 PR이 다시 열렸습니다!: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
+          else
+            MESSAGE="✅ PR Merged!!: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
+          fi
+          
           curl -X POST -H 'Content-Type: application/json' \
           -d "$DATA" \
           ${{ secrets.DISCORD_WEBHOOK_URL }}

@@ -9,23 +9,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       - name: Send Discord Notification
         run: |
-          
           # PR 정보 가져오기
-          $prTitle = "${{ github.event.pull_request.title }}"
-          $prUser = "${{ github.event.pull_request.user.login }}"
-          $prAction = "${{ github.event.action }}"
-          $prUrl = "${{ github.event.pull_request.html_url }}"
-        
-          if [ "$PR_ACTION" == "opened" ]; then
-            MESSAGE="📢 새로운 PR이 도착했습니다!: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
-          elif [ "$PR_ACTION" == "closed" ]; then
-            MESSAGE="📢 PR이 다시 열렸습니다!: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
+          prTitle="${{ github.event.pull_request.title }}"
+          prUser="${{ github.event.pull_request.user.login }}"
+          prAction="${{ github.event.action }}"
+          prUrl="${{ github.event.pull_request.html_url }}"
+          prMerged="${{ github.event.pull_request.merged }}"
+
+          if [ "$prAction" == "opened" ]; then
+            MESSAGE="📢 새로운 PR이 도착했습니다!: **${prTitle}** by ${prUser}.\nLink: ${prUrl}"
+          elif [ "$prAction" == "closed" ] && [ "$prMerged" == "true" ]; then
+            MESSAGE="✅ PR이 머지되었습니다!: **${prTitle}** by ${prUser}.\nLink: ${prUrl}"
+          elif [ "$prAction" == "closed" ]; then
+            MESSAGE="❌ PR이 닫혔습니다 (머지되지 않음): **${prTitle}** by ${prUser}.\nLink: ${prUrl}"
+          elif [ "$prAction" == "reopened" ]; then
+            MESSAGE="🔄 PR이 다시 열렸습니다!: **${prTitle}** by ${prUser}.\nLink: ${prUrl}"
           else
-            MESSAGE="✅ PR Merged!!: **${PR_TITLE}** by ${PR_USER}.\nLink: ${PR_URL}"
+            MESSAGE="ℹ️ 알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}.\nLink: ${prUrl}"
           fi
-          
-          curl -X POST -H 'Content-Type: application/json' \
-          -d "$DATA" \
-          ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          # JSON 형식으로 메시지 구성
+          DATA=$(jq -n --arg content "$MESSAGE" '{content: $content}')
+
+          # Discord 웹훅으로 메시지 전송
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d "$DATA" "${{ secrets.DISCORD_WEBHOOK_URL }}")
+
+          # 응답 코드 확인
+          if [ "$RESPONSE" -ne 204 ]; then
+            echo "Failed to send Discord notification. HTTP Status Code: $RESPONSE"
+            exit 1
+          fi

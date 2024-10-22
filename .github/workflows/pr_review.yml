@@ -10,7 +10,19 @@ jobs:
 
     steps:
     - name: Send Discord Notification
+    - env:
+          DATA: >
+            {
+              "embeds": [
+                {
+                  "title": "23-Munbin-Lee",
+                  "description": "새로운 PR이 도착했습니다!\n\nhttps://www.acmicpc.net/problem/1756",
+                  "url": "https://github.com/Munbin-Lee/test/pull/1"
+                }
+              ]
+            }
       run: |
-        curl -X POST -H 'Content-Type: application/json' \
-        -d '{"content":"Hello, World!"}' \
+        curl -X
+        POST -H 'Content-type:application/json'
+        -d "$DATA"
         ${{ secrets.DISCORD_WEBHOOK_URL }}

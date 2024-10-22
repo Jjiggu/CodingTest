@@ -28,7 +28,8 @@ jobs:
           elif [ "$prAction" == "closed" ]; then
             MESSAGE="❌ PR이 닫혔습니다 (머지되지 않음): **${prTitle}** by ${prUser}.\nLink: ${prUrl}"
           elif [ "$prAction" == "reopened" ]; then
-            MESSAGE="🔄 PR이 다시 열렸습니다!: **${prTitle}** by ${prUser}.\n\nLink: ${prUrl}"
+            MESSAGE="🔄 PR이 다시 열렸습니다!: **${prTitle}** by ${prUser}.
+            Link: ${prUrl}"
           else
             MESSAGE="ℹ️ 알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}.\nLink: ${prUrl}"
           fi

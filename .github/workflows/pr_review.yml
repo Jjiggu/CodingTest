@@ -36,7 +36,7 @@ jobs:
           elif [ "$prAction" == "reopened" ]; then
             MESSAGE="☔  PR이 다시 열렸습니다!: **${prTitle}** by ${prUser}
             
-            [PR 확인]('"${prUrl}"')"
+            [PR 확인](${prUrl})"
             
           else
             MESSAGE="❓  알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}.\nLink: ${prUrl}"

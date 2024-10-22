@@ -43,8 +43,8 @@ jobs:
             - 리뷰하러 가기 : **[클릭](${prUrl})**"
             
           elif [ "$prAction" == "reopened" ]; then
-            MESSAGE="**PR이 다시 열렸습니다!**
-            
+            MESSAGE="
+            **PR이 다시 열렸습니다!**
             - PR 제목: **${prTitle}**
             - 등록한 사람 : **${prUser}**
             - 리뷰하러 가기 : **[클릭](${prUrl})**"

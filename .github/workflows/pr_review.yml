@@ -1,0 +1,30 @@
+# pr_reviewer.yml
+name: Pull Request #workflow 이름을 설정합니다.
+
+on: # workflow가 실행될 이벤트를 설정합니다.
+	pull_request: # PR 이벤트에 대해 설정합니다.
+		types: [review_requested] # 리뷰 요청된 이벤트를 감지합니다.
+
+jobs: # workflow에서 실행할 작업을 정의합니다.
+	specific_review_requested: # 작업의 이름을 지정합니다.
+		runs-on: ubuntu-latest # 작업이 실행될 환경을 설정합니다.
+		steps: # 작업 단계들을 정의합니다.
+		  - name: pr reviewer 되면 slack 알림 보냄 # PR에 리뷰어가 할당되면 Slack에 알림을 보내는 단계의 이름을 설정합니다.
+		    uses: slackapi/slack-github-action@v1.24.0 # Slack 액션을 사용합니다.
+		    with: # 입력으로 전달할 값들을 설정합니다.
+		      channel-id: ${{ secrets.TEST_CHANNEL }} # Slack 채널 ID를 비밀로 설정합니다.
+		      payload: | # Slack에 보낼 메시지 페이로드를 설정합니다.
+		        {
+		          "text": "pr review request", # 메시지의 본문을 설정합니다.
+		          "blocks": [ # 메시지의 블록을 설정합니다.
+		            {
+		              "type": "section", # 블록의 타입을 설정합니다.
+		              "text": { # 텍스트 타입의 블록을 설정합니다.
+		                "type": "mrkdwn", # 텍스트의 마크다운 타입을 설정합니다.
+		                "text": "리뷰어로 할당되었습니다.\\\\n • 제목: PR 제목\\n • 리뷰어: @리뷰어 \\n • 링크: 리뷰 링크" # 메시지의 내용을 설정합니다.
+		              }
+		            }
+		          ]
+		        }
+		    env: # 환경 변수를 설정합니다.
+		      SLACK_BOT_TOKEN: ${{ secrets.TEST_BOT_TOKEN }} # Slack 봇 토큰을 비밀로 설정합니다.

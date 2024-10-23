@@ -24,7 +24,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          reviewer-mapping: ${{ REVIEWER_MAPPING }};
+          reviewer-mapping: ${{ secrets.REVIEWER_MAPPING }};
           script: |
             
             const mappingJson = reviewer-mapping

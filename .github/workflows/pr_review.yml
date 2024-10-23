@@ -23,9 +23,9 @@ jobs:
         if: github.event.action == 'opened'
         uses: actions/github-script@v6
         with:
-          github-token: &{{ secrets.GITHUB_TOKEN }}
+          github-token: &{{ secrets.GITHUBS_TOKEN }}
           script: |
-            const reviewers = ['kjchoi3636', 'minjayy', 'jihun_eddie'];
+            const reviewers = ['kjchoi1997', 'jymin99', 'Jjiggu'];
             const randomReviewer = reviewers[Math.floor(Math.random() * reviewers.length)];
             
             const { data: pullRequest } = await github.pulls.get({

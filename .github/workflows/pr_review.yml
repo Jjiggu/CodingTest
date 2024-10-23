@@ -111,9 +111,10 @@ jobs:
 
           if [ "$prAction" == "opened" ]; then
             MESSAGE="**📢 새로운 PR이 도착했습니다!**
+          - <@${prReviewerDiscordID}> 님 리뷰어로 할당되었습니다!! 🙏
           - PR 제목 : ${prTitle}
           - 등록한 사람 : ${prUser}
-          - @${prReviewer} 님 리뷰어로 할당되었습니다!! 🙏
+          - 리뷰어 : <@${prReviewerDiscordID}>
           - 리뷰하러 가기 : [클릭](${prUrl})"
                 
           elif [ "$prAction" == "closed" ] && [ "$prMerged" == "true" ]; then
@@ -130,13 +131,10 @@ jobs:
                 
           elif [ "$prAction" == "reopened" ]; then
             MESSAGE="**🔎 PR이 다시 열렸습니다!**
+          - <@${prReviewerDiscordID}> 님 리뷰어로 할당되었습니다!! 🙏
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
-          - @${prReviewerDiscordID} 님 리뷰어로 할당되었습니다!! 🙏
-          - <@${prReviewerDiscordID}> 님 리뷰어로 할당되었습니다!! 🙏
-          - <@민재연> 님 리뷰어로 할당되었습니다!! 🙏
           - 리뷰어 : <@${prReviewerDiscordID}>
-          - 리뷰어 : <@$prReviewerDiscordID>
           - 리뷰하러 가기 : [클릭](${prUrl})"
                 
           else

@@ -4,17 +4,58 @@ on:
   pull_request:
     types: [opened, closed, reopened]
 
+env:
+  USERNAME: "웅? 어엉..? 이게 뭐여..! PR이잖아..?"
+  AVATAR_URL: "https://i.ibb.co/dQKDmNj/test.jpg"
+
 jobs:
   notify:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
+
       - name: Install jq
         run: sudo apt-get install -y jq
 
+      - name: pick_random_reviewer
+        id: assign-reviewer
+        if: github.event.action == 'opened'
+        uses: actions/github-script@v6
+        with:
+          github-token: &{{ secrets.GITHUB_TOKEN }}
+          script: |
+            const reviewers = ['kjchoi3636', 'minjayy', 'jihun_eddie'];
+            const randomReviewer = reviewers[Math.floor(Math.random() * reviewers.length)];
+            
+            const { data: pullRequest } = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            
+            if (pullRequest.requested_reviewers.length === 0) {
+              await github.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                reviewers: [randomReviewer]
+              });
+              console.log(`리뷰어 ${randomReviewer}가 PR ${pullRequest.number}에 할당되었습니다.`);
+              return { reviewer: randomReviewer };
+            } else {
+              console.log('이미 리뷰어가 할당되어 있습니다.');
+            return { reviewer: pullRequest.requested_reviewers[0].login };
+            }
+            
+#            const comment = '@${randomReviewer} 님 리뷰어 할당되었습니다!! 🙏`
+#            core.setOutput('comment', comment) // output 을 세팅합니다
+#            core.setOutput('reviewer', randomReviewer) // core.setOutput(이름, 값)
+
+
       - name: Send Discord Notification
         env:
-          DISCORD_WEBHOOK_URL : ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
         run: |
           # PR 정보 가져오기
@@ -23,12 +64,14 @@ jobs:
           prAction="${{ github.event.action }}"
           prUrl="${{ github.event.pull_request.html_url }}"
           prMerged="${{ github.event.pull_request.merged }}"
-          prActor="${{ github.actor }}"  # 작업을 수행한 사용자
+          prActor="${{ github.actor }}"  
+          prReviewer="${{ steps.assign-reviewer.outputs.reviewer }}"
 
           if [ "$prAction" == "opened" ]; then
             MESSAGE="**📢 새로운 PR이 도착했습니다!**
           - PR 제목 : ${prTitle}
           - 등록한 사람 : ${prUser}
+          - @${assignedReviewer}님 리뷰어로 할당되었습니다!! 🙏
           - 리뷰하러 가기 : [클릭](${prUrl})"
             
           elif [ "$prAction" == "closed" ] && [ "$prMerged" == "true" ]; then
@@ -51,10 +94,6 @@ jobs:
           else
             MESSAGE="❓ 알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}. **[클릭](${prUrl})**"
           fi
-
-          # 디스코드 봇의 사용자 이름과 아바타 URL 설정
-          USERNAME="웅? 어엉..? 이게 뭐여..! PR이잖아..?"
-          AVATAR_URL="https://i.ibb.co/dQKDmNj/test.jpg"  # 원하는 아바타 이미지 URL로 변경하세요
 
           # JSON 형식으로 메시지 구성
           DATA=$(jq -n \

@@ -25,7 +25,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const reviewers = ['kjchoi1997', 'jymin99', 'Jjiggu'];
+            const reviewers = ['Jjiggu'];
             const randomReviewer = reviewers[Math.floor(Math.random() * reviewers.length)];
             
             const { data: pullRequest } = await github.rest.pulls.get({

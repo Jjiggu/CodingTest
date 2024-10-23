@@ -25,8 +25,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // 리뷰어 목록을 배열로 정의
-            const allReviewers = ['kjchoi1997', 'jymin99', 'Jjiggu'];
+            
+            const mappingJson = process.env.REVIEWER_MAPPING;
+            let githubToDiscordMap;
+            try {
+              githubToDiscordMap = JSON.parse(mappingJson);
+            } catch (error) {
+              throw new Error('Invalid JSON in REVIEWER_MAPPING secret.');
+            }
+            
+            // 리뷰어 목록을 배열로 정의 (키 리스트)
+            const allReviewers = Object.keys(githubToDiscordMap);
 
             // PR 정보 가져오기
             const { data: pullRequest } = await github.rest.pulls.get({
@@ -57,12 +66,32 @@ jobs:
                 reviewers: [randomReviewer]
               });
               console.log(`리뷰어 ${randomReviewer}가 PR #${pullRequest.number}에 할당되었습니다.`);
-              core.setOutput('reviewer', randomReviewer)
+              
+              // Discord ID 가져오기
+              const discordId = githubToDiscordMap[randomReviewer];
+              if (!discordId) {
+                throw new Error(`Discord ID not found for GitHub user: ${randomReviewer}`);
+              }
+
+              // 출력 변수 설정
+              core.setOutput('reviewer', randomReviewer);
+              core.setOutput('discord_id', discordId);
             } else {
               const existingReviewer = pullRequest.requested_reviewers[0].login;
               console.log(`이미 리뷰어 ${existingReviewer}가 할당되어 있습니다.`);
-              core.setOutput('reviewer', existingReviewer)
+              
+              // Discord ID 가져오기
+              const discordId = githubToDiscordMap[existingReviewer];
+              if (!discordId) {
+                throw new Error(`Discord ID not found for GitHub user: ${existingReviewer}`);
+              }
+
+              // 출력 변수 설정
+              core.setOutput('reviewer', existingReviewer);
+              core.setOutput('discord_id', discordId);
             }
+            
+            
 
       - name: Send Discord Notification
         env:
@@ -77,6 +106,7 @@ jobs:
           prMerged="${{ github.event.pull_request.merged }}"
           prActor="${{ github.actor }}"  
           prReviewer="${{ steps.assign-reviewer.outputs.reviewer }}"
+          prReviewerDiscordID="${{ steps.assign-reviewer.outputs.discord_id }}"
 
           if [ "$prAction" == "opened" ]; then
             MESSAGE="**📢 새로운 PR이 도착했습니다!**
@@ -101,7 +131,7 @@ jobs:
             MESSAGE="**🔎 PR이 다시 열렸습니다!**
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
-          - @${prReviewer}님 리뷰어로 할당되었습니다!! 🙏
+          - @${prReviewerDiscordID}님 리뷰어로 할당되었습니다!! 🙏
           - 리뷰하러 가기 : [클릭](${prUrl})"
                 
           else

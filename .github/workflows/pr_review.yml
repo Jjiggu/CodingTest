@@ -133,7 +133,7 @@ jobs:
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
           - @${prReviewerDiscordID} 님 리뷰어로 할당되었습니다!! 🙏
-          - 리뷰어 : @$prReviewerDiscordID 
+          - 리뷰어 : @${prReviewerDiscordID} 
           - 리뷰하러 가기 : [클릭](${prUrl})"
                 
           else
@@ -145,7 +145,8 @@ jobs:
           --arg content "$MESSAGE" \
           --arg username "$USERNAME" \
           --arg avatar_url "$AVATAR_URL" \
-          '{content: $content, username: $username, avatar_url: $avatar_url}')
+          --argjson allowed_mentions "{\"users\": [\"${prReviewerDiscordID}\"]}" \
+          '{content: $content, username: $username, avatar_url: $avatar_url, allowed_mentions: $allowed_mentions}')
 
           # Discord 웹훅으로 메시지 전송
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d "$DATA" "$DISCORD_WEBHOOK_URL")

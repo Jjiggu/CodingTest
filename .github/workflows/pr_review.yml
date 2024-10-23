@@ -23,28 +23,30 @@ jobs:
           prAction="${{ github.event.action }}"
           prUrl="${{ github.event.pull_request.html_url }}"
           prMerged="${{ github.event.pull_request.merged }}"
+          prActor="${{ github.actor }}"  # 작업을 수행한 사용자
 
           if [ "$prAction" == "opened" ]; then
-            MESSAGE="**새로운 PR이 도착했습니다! 📢**
-            - PR 제목 : ${prTitle}
-            - 등록한 사람 : ${prUser}
-            - 리뷰하러 가기 : [클릭](${prUrl})"
-            
-          elif [ "$prAction" == "closed" ] && [ "$prMerged" == "true" ]; then
-            MESSAGE="**PR이 머지되었습니다! 🎉**
-            - PR 제목 : ${prTitle}
-            - 등록한 사람 : ${prUser}
-            - 리뷰하러 가기 : [클릭](${prUrl})"
-            
-          elif [ "$prAction" == "closed" ]; then
-            MESSAGE="- PR 제목 : ${prTitle}
-          - 등록한 사람 : ${prUser}
-          - 리뷰하러 가기 : [클릭](${prUrl})"
-               
-          elif [ "$prAction" == "reopened" ]; then
-            MESSAGE="**PR이 다시 열렸습니다! 🔎**
+            MESSAGE="**📢 새로운 PR이 도착했습니다!**
           - PR 제목 : ${prTitle}
           - 등록한 사람 : ${prUser}
+          - 리뷰하러 가기 : [클릭](${prUrl})"
+            
+          elif [ "$prAction" == "closed" ] && [ "$prMerged" == "true" ]; then
+            MESSAGE="**🎉 PR이 머지되었습니다!**
+          - PR 제목 : ${prTitle}
+          - 작업 수행자 : ${prActor}
+          - PR 확인하기 : [클릭](${prUrl})"
+            
+          elif [ "$prAction" == "closed" ]; then
+            MESSAGE=""**🚨 PR이 닫혔습니다!**
+          - PR 제목 : ${prTitle}
+          - 작업 수행자 : ${prActor}
+          - PR 확인하기 : [클릭](${prUrl})"
+               
+          elif [ "$prAction" == "reopened" ]; then
+            MESSAGE="**🔎 PR이 다시 열렸습니다!**
+          - PR 제목 : ${prTitle}
+          - 작업 수행자 : ${prActor}
           - 리뷰하러 가기 : [클릭](${prUrl})"
           else
             MESSAGE="❓ 알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}. **[클릭](${prUrl})**"

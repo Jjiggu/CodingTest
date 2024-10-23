@@ -20,7 +20,7 @@ jobs:
 
       - name: pick_random_reviewer
         id: assign-reviewer
-        if: github.event.action == 'opened'
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,24 +28,25 @@ jobs:
             const reviewers = ['kjchoi1997', 'jymin99', 'Jjiggu'];
             const randomReviewer = reviewers[Math.floor(Math.random() * reviewers.length)];
             
-            const { data: pullRequest } = await github.pulls.get({
+            const { data: pullRequest } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number
             });
             
             if (pullRequest.requested_reviewers.length === 0) {
-              await github.pulls.requestReviewers({
+              await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: context.payload.pull_request.number,
                 reviewers: [randomReviewer]
               });
               console.log(`리뷰어 ${randomReviewer}가 PR ${pullRequest.number}에 할당되었습니다.`);
-              return { reviewer: randomReviewer };
+              core.setOutput('reviewer', randomReviewer);
             } else {
-              console.log('이미 리뷰어가 할당되어 있습니다.');
-            return { reviewer: pullRequest.requested_reviewers[0].login };
+              const existingReviewer = pullRequest.requested_reviewers[0].login;
+              console.log(`이미 리뷰어 ${existingReviewer}가 할당되어 있습니다.`);
+              core.setOutput('reviewer', existingReviewer);
             }
 
 
@@ -86,7 +87,9 @@ jobs:
             MESSAGE="**🔎 PR이 다시 열렸습니다!**
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
+          - @${prReviewer}님 리뷰어로 할당되었습니다!! 🙏
           - 리뷰하러 가기 : [클릭](${prUrl})"
+          
           else
             MESSAGE="❓ 알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}. **[클릭](${prUrl})**"
           fi

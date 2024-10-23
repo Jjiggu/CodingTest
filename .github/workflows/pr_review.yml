@@ -22,12 +22,12 @@ jobs:
         id: assign-reviewer
         if: github.event.action == 'opened' || github.event.action == 'reopened'
         uses: actions/github-script@v6
-        with:
+        env:
+          REVIEWER_MAPPING: ${{ secrets.REVIEWER_MAPPING }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          reviewer_mapping: ${{ secrets.REVIEWER_MAPPING }}
+        with:
           script: |
-            
-            const mappingJson = reviewer_mapping;
+            const mappingJson = process.env.REVIEWER_MAPPING;
             let githubToDiscordMap;
             try {
               githubToDiscordMap = JSON.parse(mappingJson);

@@ -24,9 +24,10 @@ jobs:
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          reviewer-mapping: ${{ REVIEWER_MAPPING }};
           script: |
             
-            const mappingJson = process.env.REVIEWER_MAPPING;
+            const mappingJson = reviewer-mapping
             let githubToDiscordMap;
             try {
               githubToDiscordMap = JSON.parse(mappingJson);

@@ -14,7 +14,7 @@ jobs:
 
       - name: Send Discord Notification
         env:
-          DISCORD_WEBHOOK_URL = ${{ secrets.DISCORD_WEBHOOK_URL }}")
+          DISCORD_WEBHOOK_URL = ${{ secrets.DISCORD_WEBHOOK_URL }}
 
         run: |
           # PR 정보 가져오기

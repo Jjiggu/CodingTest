@@ -13,6 +13,9 @@ jobs:
         run: sudo apt-get install -y jq
 
       - name: Send Discord Notification
+        env:
+          DISCORD_WEBHOOK_URL = ${{ secrets.DISCORD_WEBHOOK_URL }}")
+
         run: |
           # PR 정보 가져오기
           prTitle="${{ github.event.pull_request.title }}"
@@ -60,7 +63,7 @@ jobs:
             '{content: $content, username: $username, avatar_url: $avatar_url}')
 
           # Discord 웹훅으로 메시지 전송
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d "$DATA" "${{ secrets.DISCORD_WEBHOOK_URL }}")
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d "$DATA" "DISCORD_WEBHOOK_URL")
 
           # 응답 코드 확인
           if [ "$RESPONSE" -ne 204 ]; then

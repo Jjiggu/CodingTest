@@ -133,7 +133,7 @@ jobs:
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
           - @${prReviewerDiscordID} 님 리뷰어로 할당되었습니다!! 🙏
-          - 리뷰어 : <@${prReviewerDiscordID}> 
+          - 리뷰어 : @$prReviewerDiscordID 
           - 리뷰하러 가기 : [클릭](${prUrl})"
                 
           else

@@ -57,11 +57,11 @@ jobs:
                 reviewers: [randomReviewer]
               });
               console.log(`리뷰어 ${randomReviewer}가 PR #${pullRequest.number}에 할당되었습니다.`);
-              return { reviewer: randomReviewer };
+              core.setOutput('reviewer', randomReviewer)
             } else {
               const existingReviewer = pullRequest.requested_reviewers[0].login;
               console.log(`이미 리뷰어 ${existingReviewer}가 할당되어 있습니다.`);
-              return { reviewer: existingReviewer };
+              core.setOutput('reviewer', existingReviewer)
             }
 
       - name: Send Discord Notification
@@ -101,7 +101,7 @@ jobs:
             MESSAGE="**🔎 PR이 다시 열렸습니다!**
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
-          - ${prReviewer}님 리뷰어로 할당되었습니다!! 🙏
+          - @${prReviewer}님 리뷰어로 할당되었습니다!! 🙏
           - 리뷰하러 가기 : [클릭](${prUrl})"
                 
           else

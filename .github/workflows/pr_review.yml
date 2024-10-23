@@ -145,8 +145,7 @@ jobs:
           --arg content "$MESSAGE" \
           --arg username "$USERNAME" \
           --arg avatar_url "$AVATAR_URL" \
-          --argjson allowed_mentions "{\"users\": [\"${prReviewerDiscordID}\"]}" \
-          '{content: $content, username: $username, avatar_url: $avatar_url, allowed_mentions: $allowed_mentions}')
+          '{content: $content, username: $username, avatar_url: $avatar_url}')
 
           # Discord 웹훅으로 메시지 전송
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d "$DATA" "$DISCORD_WEBHOOK_URL")

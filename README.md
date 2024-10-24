@@ -78,7 +78,7 @@
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/Ju0011"><img src="https://avatars.githubusercontent.com/u/109535272?v=4" width="100px;" alt=""/><br /><sub><b>Ju0011</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/seobokyeong0314"><img src="https://avatars.githubusercontent.com/u/116994319?v=4" width="100px;" alt=""/><br /><sub><b>jymin99</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/seobokyeong0314"><img src="https://avatars.githubusercontent.com/u/116994319?v=4" width="100px;" alt=""/><br /><sub><b>seobokyeong0314</b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>

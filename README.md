@@ -69,26 +69,30 @@
         <a href="https://github.com/Jjiggu">
           <img src="https://avatars.githubusercontent.com/u/100821696?v=4" width="100px;" alt=""/>
         </a>
-        <hr />
+      </td>
+      <td align="center">
         <sub><b>Jjiggu</b></sub>
       </td>
       <td align="center">
         <a href="https://github.com/Ju0011">
           <img src="https://avatars.githubusercontent.com/u/73513813?v=4" width="100px;" alt=""/>
         </a>
-        <hr />
+      </td>
+      <td align="center">
         <sub><b>jymin99</b></sub>
       </td>
       <td align="center">
         <a href="https://github.com/seobokyeong0314">
           <img src="https://avatars.githubusercontent.com/u/72608849?v=4" width="100px;" alt=""/>
         </a>
-        <hr />
+      </td>
+      <td align="center">
         <sub><b>kjchoi1997</b></sub>
       </td>
     </tr>
   </tbody>
 </table>
+
 
 
 

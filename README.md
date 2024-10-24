@@ -73,7 +73,7 @@
 </table>
 
 
-## 🏃🏼‍♂️ 탈출 목록
+## 🏃🏼‍♂️ 탈출
 <table style="width: 100%;">
   <tbody>
     <tr>

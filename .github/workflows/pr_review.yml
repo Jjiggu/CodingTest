@@ -115,19 +115,19 @@ jobs:
           - PR 제목 : ${prTitle}
           - 등록한 사람 : ${prUser}
           - 리뷰어 : <@${prReviewerDiscordID}>
-          - 리뷰하러 가기 : [클릭](${prUrl})"
+          - 리뷰하러 가기 >> [Click](${prUrl})"
                 
           elif [ "$prAction" == "closed" ] && [ "$prMerged" == "true" ]; then
             MESSAGE="**🎉 PR이 머지되었습니다!**
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
-          - PR 확인하기 : [클릭](${prUrl})"
+          - PR 확인하기 >> [Click](${prUrl})"
                 
           elif [ "$prAction" == "closed" ]; then
             MESSAGE="**🚨 PR이 닫혔습니다!**
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
-          - PR 확인하기 : [클릭](${prUrl})"
+          - PR 확인하기 >> [Click](${prUrl})"
                 
           elif [ "$prAction" == "reopened" ]; then
             MESSAGE="**🔎 PR이 다시 열렸습니다!**
@@ -135,7 +135,7 @@ jobs:
           - PR 제목 : ${prTitle}
           - 작업 수행자 : ${prActor}
           - 리뷰어 : <@${prReviewerDiscordID}>
-          - 리뷰하러 가기 : [클릭](${prUrl})"
+          - 리뷰하러 가기 >> [Click](${prUrl})"
                 
           else
            MESSAGE="❓ 알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}. **[클릭](${prUrl})**"

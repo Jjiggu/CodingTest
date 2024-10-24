@@ -55,8 +55,7 @@
 
 #### PR 알림봇
 - 💡 디스코드를 통해 알림이 와요!
-<img width="559" alt="스크린샷 2024-10-17 오후 11 28 51" src="https://github.com/user-attachments/assets/bd09ff11-0764-46c4-992e-c542b486fd98">
-
+<img width="462" alt="스크린샷 2024-10-24 오후 10 06 27" src="https://github.com/user-attachments/assets/5b618628-86aa-4866-a1f4-fd7c15f134aa">
 
 #### 📁 파일 및 폴더 구조
 - 개인 폴더(이름으로 생성) -> 플랫폼이름(ex. 백준, 프로그래머스) -> 레벨 -> 문제번호 문제이름 -> 문제이름.언어

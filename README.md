@@ -65,12 +65,31 @@
 <table style="width: 100%;">
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/Jjiggu"><img src="https://avatars.githubusercontent.com/u/100821696?v=4" width="100px;" alt=""/><br /><sub><b>Jjiggu</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/Ju0011"><img src="https://avatars.githubusercontent.com/u/73513813?v=4" width="100px;" alt=""/><br /><sub><b>jymin99</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/seobokyeong0314"><img src="https://avatars.githubusercontent.com/u/72608849?v=4" width="100px;" alt=""/><br /><sub><b>kjchoi1997</b></sub></a><br /></td>
+      <td align="center">
+        <a href="https://github.com/Jjiggu">
+          <img src="https://avatars.githubusercontent.com/u/100821696?v=4" width="100px;" alt=""/>
+        </a>
+        <hr />
+        <sub><b>Jjiggu</b></sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/Ju0011">
+          <img src="https://avatars.githubusercontent.com/u/73513813?v=4" width="100px;" alt=""/>
+        </a>
+        <hr />
+        <sub><b>jymin99</b></sub>
+      </td>
+      <td align="center">
+        <a href="https://github.com/seobokyeong0314">
+          <img src="https://avatars.githubusercontent.com/u/72608849?v=4" width="100px;" alt=""/>
+        </a>
+        <hr />
+        <sub><b>kjchoi1997</b></sub>
+      </td>
     </tr>
   </tbody>
 </table>
+
 
 
 ## 🏃🏼‍♂️🏃🏻‍♀️ 탈출 목록

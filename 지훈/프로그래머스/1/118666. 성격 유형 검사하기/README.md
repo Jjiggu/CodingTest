@@ -6,6 +6,7 @@
 
 메모리: 78.8 MB, 시간: 0.84 ms
 
+
 ### 구분
 
 코딩테스트 연습 > 2022 KAKAO TECH INTERNSHIP

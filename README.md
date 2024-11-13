@@ -41,7 +41,7 @@
 
 - [주차] 며칠_이름 (ex. [2주차] 지훈_4일차)
 - 나머지는 템플릿 형식에 맞춰서
-- 개인 브랜치로 PR 생성
+- PR 생성 -> base : 개인 브랜치(e.g. Hoon), compare(e.g. Hoon_week2_day1) : 주차 및 일차별 브랜치 
 
 #### Commit Message
 - Add : [{플랫폼}-문제번호] 문제이름

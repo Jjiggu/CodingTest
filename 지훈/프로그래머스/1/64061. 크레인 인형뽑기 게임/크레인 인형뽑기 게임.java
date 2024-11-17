@@ -20,7 +20,7 @@ public class Solution {
             }
         }
         
-        for (int move:moves) {
+        for (int move : moves) {
             int col = move - 1;
             
             if(!boardList.get(col).isEmpty()) {

@@ -1,35 +1,41 @@
+#include <string>
 #include <vector>
+#include <queue>
 #include <iostream>
-#include <stack>
-#include <algorithm>
 
 using namespace std;
 
-vector<int> solution(vector<int> arr)
-{
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
     vector<int> answer;
-    stack<int> st;
-    if (arr.size() <= 0) {
-        return answer;
+    queue<int> q;
+
+    for (int i = 0; i < progresses.size(); i++) {
+        int calNum = (100 - progresses[i]);
+        int num = calNum % speeds[i] == 0 ? calNum / speeds[i] : calNum / speeds[i] + 1;
+        q.push(num);
     }
 
-    st.push(arr[0]);
 
-    for (int i = 1; i < arr.size(); i++) {
-        int num = st.top();
-        if (num == arr[i]) {
-            continue;
+
+
+    int front = q.front();
+    q.pop();
+    int cnt = 1;
+    while (!q.empty()) {
+        if (front >= q.front()) {
+            q.pop();
+            cnt++;
         } else {
-            st.push(arr[i]);
+            front = q.front();
+            q.pop();
+            answer.push_back(cnt);
+            cnt = 1;
+        }
+
+        if (q.empty()) {
+            answer.push_back(cnt);
         }
     }
-
-    while (!st.empty()) {
-        answer.push_back(st.top());
-        st.pop();
-    }
-
-    reverse(answer.begin(), answer.end());
 
     return answer;
 }

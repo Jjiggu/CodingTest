@@ -1,16 +1,30 @@
-from collections import deque
-def solution(priorities, location):
-    process=deque([(j,i) for i, j in enumerate(priorities)])
-    #index와 그 값 process에 저장 process=(값, 초기 인덱스)
-    answer = 0
-    
-    while process: 
-        a=process.popleft() #대기 프로세스 순서대로 검사
-        if process and a[0]<max(process)[0]: #나온 수가 대기 프로세스 최댓값보다 작으면 다시 queue에 넣음
-            process.append(a)
-        else: 
-            answer+=1 #작지 않으면 answer값 하나씩 증가시키기
-            if location==a[1]: #찾으려던 location의 값과 같으면 루프 중단
-                break
+import math
+def solution(progresses, speeds):
+    answer = []
+    process=[]
+    limit=math.ceil((100 - progresses[0]) / speeds[0])
+    done=0
+    # 반복문 한번만 쓰도록 수정한 코드
+    for i in range(len(progresses)):
+        left=math.ceil((100 - progresses[i]) / speeds[i])
+        done+=1
+        if i==0 or limit<left:
+            process.append(math.ceil((100 - progresses[i]) / speeds[i]))
+            if i!=0:
+                answer.append(done-1)
+                limit=math.ceil((100 - progresses[i]) / speeds[i])
+                done=1
+        else:
+            continue
+    if left:
+        answer.append(done)
+    #2중 반복문 쓰던 코드 
+#     while process:
+#         done=1
+#         limit=process.pop(0)
+#         while process and process[0]<=limit:
+#             process.pop(0)
+#             done+=1
+#         answer.append(done)
     
     return answer

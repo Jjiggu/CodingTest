@@ -56,13 +56,11 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (mapNormal[i][j] == 'R' || mapNormal[i][j] == 'G' || mapNormal[i][j] == 'B') {
-                    if (!visitedNormal[i][j]) {
-                        visitedNormal[i][j] = true;
-                        normalQ.add(new int[]{i, j});
-                        bfsNormal(normalQ, mapNormal[i][j]);
-                        result += 1;
-                    }
+                if (!visitedNormal[i][j]) {
+                    visitedNormal[i][j] = true;
+                    normalQ.add(new int[]{i, j});
+                    bfsNormal(normalQ, mapNormal, visitedNormal, mapNormal[i][j]);
+                    result += 1;
                 }
             }
         }
@@ -75,13 +73,11 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (mapBlind[i][j] == 'R' || mapBlind[i][j] == 'B') {
-                    if (!visitedBlind[i][j]) {
-                        visitedBlind[i][j] = true;
-                        colorBlindnessQ.add(new int[]{i, j});
-                        bfsBlind(colorBlindnessQ, mapBlind[i][j]);
-                        result += 1;
-                    }
+                if (!visitedBlind[i][j]) {
+                    visitedBlind[i][j] = true;
+                    colorBlindnessQ.add(new int[]{i, j});
+                    bfsNormal(colorBlindnessQ, mapBlind, visitedBlind, mapBlind[i][j]);
+                    result += 1;
                 }
             }
         }
@@ -92,7 +88,7 @@ public class Main {
     }
 
 
-    public static void bfsNormal(Queue<int[]> q, char color) {
+    public static void bfsNormal(Queue<int[]> q, char[][] maps, Boolean[][] visitedMaps,  char color) {
         while (!q.isEmpty()) {
             int[] now = q.poll();
             int x = now[0];
@@ -104,31 +100,9 @@ public class Main {
                 int ny = y + dy[i];
 
                 if (nx >= 0 && ny >= 0 && nx < N && ny < N) {
-                    if (mapNormal[nx][ny] == color && !visitedNormal[nx][ny]) {
-                        normalQ.add(new int[]{nx, ny});
-                        visitedNormal[nx][ny] = true;
-                    }
-                }
-            }
-        }
-    }
-
-
-    public static void bfsBlind(Queue<int[]> q, char color) {
-        while (!q.isEmpty()) {
-            int[] now = q.poll();
-            int x = now[0];
-            int y = now[1];
-
-
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx >= 0 && ny >= 0 && nx < N && ny < N) {
-                    if (mapBlind[nx][ny] == color && !visitedBlind[nx][ny]) {
-                        colorBlindnessQ.add(new int[]{nx, ny});
-                        visitedBlind[nx][ny] = true;
+                    if (maps[nx][ny] == color && !visitedMaps[nx][ny]) {
+                        q.add(new int[]{nx, ny});
+                        visitedMaps[nx][ny] = true;
                     }
                 }
             }

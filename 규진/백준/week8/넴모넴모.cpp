@@ -9,10 +9,10 @@ int dx[3] = {0,-1,-1};
 
 bool check(int y, int x) {
     int cnt = 0;
-    for(int i = 0; i < 3; i++){
+    for (int i = 0; i < 3; i++) {
         int ny = y + dy[i];
         int nx = x + dx[i];
-        if (ny >= 0 && nx < N && nx >= 0 && nx< M){
+        if (ny >= 0 && nx < N && nx >= 0 && nx< M) {
             if (map[ny][nx])
                 cnt++;
         }
@@ -24,12 +24,12 @@ bool check(int y, int x) {
 
 
 void backTracking(int y, int x) {
-    if (x == M && y == N - 1){
+    if (x == M && y == N - 1) {
         ans++;
         return;
     }
 
-    if (x == M){
+    if (x == M) {
         x = 0;
         y++;
     }

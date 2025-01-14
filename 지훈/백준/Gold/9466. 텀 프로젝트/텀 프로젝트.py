@@ -1,6 +1,7 @@
 def dfs(start):
     stack = []
     cycle_nodes = []
+
     while True:
         if visited[start]:
             if start in stack:
@@ -12,6 +13,7 @@ def dfs(start):
         start = numbers[start]
 
     return cycle_nodes
+
 
 for _ in range(int(input())):
     N = int(input())

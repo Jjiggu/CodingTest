@@ -37,7 +37,6 @@ void permutation(int depth) {
             check[i] = false;
         }
     }
-
 }
 
 int main() {

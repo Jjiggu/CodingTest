@@ -31,7 +31,6 @@ void backTracking(int index) {
             egg[i][0] += egg[index][1];
             egg[index][0] += egg[i][1];
         }
-
         if (!check)
             backTracking(N);
     }

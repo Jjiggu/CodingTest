@@ -9,7 +9,7 @@ void combination(int depth, int next) {
     if (depth == r) {
         for (int i = 0; i < r; i++) {
             cout << cArr[i] << " ";
-        }
+}
         cout << endl;
         return;
     }

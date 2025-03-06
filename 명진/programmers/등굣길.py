@@ -1,23 +1,13 @@
-from collections import deque
-
-
-def solution(begin, target, words):
-    if target not in words:
-        return 0
-
-    len_w = len(begin)
-    q = deque()
-    q.append((begin, 0))
-    while q:
-        cur, dist = q.popleft()
-        if cur == target:
-            return dist
-        for w in words:
-            diff = 0
-            for i in range(len_w):
-                if w[i] != cur[i]:
-                    diff += 1
-            if diff == 1:
-                q.append((w, dist+1))
-
-    return 0
+def solution(m, n, puddles):
+    dp = [[0]*(m+1) for _ in range(n+1)]
+    for x, y in puddles:
+        dp[y][x] = -1
+    dp[1][1] = 1
+    for r in range(1, n+1):
+        for c in range(1, m+1):
+            if dp[r][c] == -1:
+                dp[r][c] = 0
+                continue
+            dp[r][c] += (dp[r][c-1] + dp[r-1][c]) % 1000000007
+    
+    return dp[-1][-1]

@@ -25,7 +25,7 @@ typedef struct Edge {
 int n, m, start, end_, s, p, y;
 vector<Edge> g[MAX];
 double dist[MAX];
-double dp[MAX][2];
+double dp[MAX][2];  //[0]: paid, [1]: free
 
 void solve() {
   cin >> n >> m >> start >> end_ >> s >> p >> y;

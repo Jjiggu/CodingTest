@@ -14,6 +14,7 @@ int solution(int n, vector<int> stations, int w)
                 answer++;
                 idx += range;
             }
+            idx = stations[i] + w + 1;
         } else {
             idx = stations[i] + w + 1;
         }

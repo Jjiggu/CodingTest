@@ -157,8 +157,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          USERNAME: "웅? 어엉..? PR 시간이에요!"
-          AVATAR_URL: "https://i.ibb.co/dQKDmNj/test.jpg"
+          USERNAME: "PR 리뷰 리마인더"
+          AVATAR_URL: "https://ibb.co/vxCJf1Ph"
         run: |
           PRS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
@@ -170,7 +170,7 @@ jobs:
             exit 0
           fi
 
-          MESSAGE="**📝 리뷰 요청 리마인더! 오후 8시 17분입니다.**\n"
+          MESSAGE="**리뷰해주세요!**"
 
           for row in $(echo "$PRS" | jq -r '.[] | @base64'); do
             _jq() {
@@ -178,11 +178,18 @@ jobs:
             }
 
             TITLE=$(_jq '.title')
-            NUMBER=$(_jq '.number')
             URL=$(_jq '.html_url')
             AUTHOR=$(_jq '.user.login')
+            REVIEWERS=$(_jq '[.requested_reviewers[].login] | join(", ")')
 
-            MESSAGE+="\n- [#${NUMBER} ${TITLE}](${URL}) (by ${AUTHOR})"
+            MESSAGE+="
+            
+            - PR 제목 : ${TITLE}
+            - 등록한 사람 : ${AUTHOR}
+            - 리뷰어 : <@${REVIEWERS}>
+            - 리뷰하러 가기 >> [Click](${URL})
+            
+            "
           done
 
           DATA=$(jq -n \

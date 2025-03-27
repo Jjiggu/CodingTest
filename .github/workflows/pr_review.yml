@@ -158,51 +158,50 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           USERNAME: "PR 리뷰 리마인더"
-          AVATAR_URL: "https://ibb.co/vxCJf1Ph"
+          AVATAR_URL: "https://i.ibb.co/GvfVG729/R1280x0-fjpg.jpg"
         run: |
           PRS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
-
+      
           PR_COUNT=$(echo "$PRS" | jq length)
-
+      
           if [ "$PR_COUNT" -eq 0 ]; then
             echo "열린 PR이 없습니다."
             exit 0
           fi
-
-          MESSAGE="**리뷰해주세요!**"
-
+      
           for row in $(echo "$PRS" | jq -r '.[] | @base64'); do
             _jq() {
               echo "${row}" | base64 --decode | jq -r "${1}"
             }
-
+      
             TITLE=$(_jq '.title')
             URL=$(_jq '.html_url')
             AUTHOR=$(_jq '.user.login')
             REVIEWERS=$(_jq '[.requested_reviewers[].login] | join(", ")')
-
-            MESSAGE+="
             
-            - PR 제목 : ${TITLE}
-            - 등록한 사람 : ${AUTHOR}
-            - 리뷰어 : <@${REVIEWERS}>
-            - 리뷰하러 가기 >> [Click](${URL})
-            
-            "
-          done
-
-          DATA=$(jq -n \
-            --arg content "$MESSAGE" \
-            --arg username "$USERNAME" \
-            --arg avatar_url "$AVATAR_URL" \
-            '{content: $content, username: $username, avatar_url: $avatar_url}')
-
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            -H "Content-Type: application/json" \
-            -d "$DATA" "$DISCORD_WEBHOOK_URL")
-
-          if [ "$RESPONSE" -ne 204 ]; then
-            echo "Discord 메시지 전송 실패: HTTP $RESPONSE"
-            exit 1
-          fi
+            if [ -z "$REVIEWERS" ]; then
+              REVIEWERS="(없음)"
+            fi
+      
+            MESSAGE="**리뷰해주세요!**
+              - PR 제목 : ${TITLE}
+              - 등록한 사람 : ${AUTHOR}
+              - 리뷰어 : ${REVIEWERS}
+              - 리뷰하러 가기 >> [Click](${URL})"
+      
+            DATA=$(jq -n \
+              --arg content "$MESSAGE" \
+              --arg username "$USERNAME" \
+              --arg avatar_url "$AVATAR_URL" \
+              '{content: $content, username: $username, avatar_url: $avatar_url}')
+      
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+              -H "Content-Type: application/json" \
+              -d "$DATA" "$DISCORD_WEBHOOK_URL")
+      
+            if [ "$RESPONSE" -ne 204 ]; then
+              echo "Discord 메시지 전송 실패: HTTP $RESPONSE (PR: ${TITLE})"
+              exit 1
+            fi
+            done

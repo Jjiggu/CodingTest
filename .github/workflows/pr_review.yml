@@ -157,9 +157,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          REVIEWER_MAPPING: ${{ secrets.REVIEWER_MAPPING }}
           USERNAME: "PR 리뷰 리마인더"
           AVATAR_URL: "https://i.ibb.co/GvfVG729/R1280x0-fjpg.jpg"
         run: |
+          echo "$REVIEWER_MAPPING" > mapping.json
+      
           PRS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
       
@@ -170,6 +173,8 @@ jobs:
             exit 0
           fi
       
+          IS_FIRST=true
+      
           for row in $(echo "$PRS" | jq -r '.[] | @base64'); do
             _jq() {
               echo "${row}" | base64 --decode | jq -r "${1}"
@@ -178,17 +183,34 @@ jobs:
             TITLE=$(_jq '.title')
             URL=$(_jq '.html_url')
             AUTHOR=$(_jq '.user.login')
-            REVIEWERS=$(_jq '[.requested_reviewers[].login] | join(", ")')
-            
-            if [ -z "$REVIEWERS" ]; then
-              REVIEWERS="(없음)"
+            NUMBER=$(_jq '.number')
+            REVIEWERS=$(_jq '[.requested_reviewers[].login] | join(",")')
+      
+            DISCORD_MENTIONS="(없음)"
+            if [ -n "$REVIEWERS" ]; then
+              DISCORD_MENTIONS=$(echo "$REVIEWERS" | tr ',' '\n' | while read reviewer; do
+                DISCORD_ID=$(jq -r --arg reviewer "$reviewer" '.[$reviewer]' mapping.json)
+                if [ "$DISCORD_ID" != "null" ]; then
+                  echo -n "<@$DISCORD_ID> "
+                else
+                  echo -n "$reviewer "
+                fi
+              done)
             fi
       
-            MESSAGE="**리뷰해주세요!**
-              - PR 제목 : ${TITLE}
-              - 등록한 사람 : ${AUTHOR}
-              - 리뷰어 : ${REVIEWERS}
-              - 리뷰하러 가기 >> [Click](${URL})"
+            # 첫 메시지에만 리뷰해주세요 포함
+            if [ "$IS_FIRST" = true ]; then
+              HEADER="**리뷰해주세요!**\n"
+              IS_FIRST=false
+            else
+              HEADER=""
+            fi
+      
+            MESSAGE="${HEADER}
+          - PR 제목 : ${TITLE}
+          - 등록한 사람 : ${AUTHOR}
+          - 리뷰어 : ${DISCORD_MENTIONS}
+          - 리뷰하러 가기 >> [Click](${URL})"
       
             DATA=$(jq -n \
               --arg content "$MESSAGE" \
@@ -204,4 +226,4 @@ jobs:
               echo "Discord 메시지 전송 실패: HTTP $RESPONSE (PR: ${TITLE})"
               exit 1
             fi
-            done
+          done

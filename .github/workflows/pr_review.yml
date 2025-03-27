@@ -200,7 +200,7 @@ jobs:
       
             # 첫 메시지에만 리뷰해주세요 포함
             if [ "$IS_FIRST" = true ]; then
-              HEADER="**리뷰해주세요!**\n"
+              HEADER="**리뷰해주세요!**"
               IS_FIRST=false
             else
               HEADER=""

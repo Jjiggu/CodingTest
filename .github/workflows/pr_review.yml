@@ -4,12 +4,16 @@ on:
   pull_request:
     types: [opened, closed, reopened]
 
+  schedule:
+    - cron: '17 11 * * 1-5'  # 월~금 오후 8시 17분 (KST = UTC+9)
+
 env:
   USERNAME: "웅? 어엉..? 이게 뭐여..! PR이잖아..?"
   AVATAR_URL: "https://i.ibb.co/dQKDmNj/test.jpg"
 
 jobs:
   notify:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
@@ -35,30 +39,22 @@ jobs:
               throw new Error('Invalid JSON in REVIEWER_MAPPING secret.');
             }
             
-            // 리뷰어 목록을 배열로 정의 (키 리스트)
             const allReviewers = Object.keys(githubToDiscordMap);
-
-            // PR 정보 가져오기
             const { data: pullRequest } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number
             });
 
-            // PR 작성자
             const prAuthor = pullRequest.user.login;
-
-            // 리뷰어 목록에서 PR 작성자 제외
             const reviewers = allReviewers.filter(reviewer => reviewer.toLowerCase() !== prAuthor.toLowerCase());
 
             if (reviewers.length === 0) {
               throw new Error('No valid reviewers available (all reviewers are PR authors).');
             }
 
-            // 리뷰어 목록에서 랜덤으로 하나 선택
             const randomReviewer = reviewers[Math.floor(Math.random() * reviewers.length)];
 
-            // 이미 리뷰어가 할당되어 있는지 확인
             if (pullRequest.requested_reviewers.length === 0) {
               await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,
@@ -66,40 +62,30 @@ jobs:
                 pull_number: context.payload.pull_request.number,
                 reviewers: [randomReviewer]
               });
-              console.log(`리뷰어 ${randomReviewer}가 PR #${pullRequest.number}에 할당되었습니다.`);
-              
-              // Discord ID 가져오기
+
               const discordId = githubToDiscordMap[randomReviewer];
               if (!discordId) {
                 throw new Error(`Discord ID not found for GitHub user: ${randomReviewer}`);
               }
 
-              // 출력 변수 설정
               core.setOutput('reviewer', randomReviewer);
               core.setOutput('discord_id', discordId);
             } else {
               const existingReviewer = pullRequest.requested_reviewers[0].login;
-              console.log(`이미 리뷰어 ${existingReviewer}가 할당되어 있습니다.`);
-              
-              // Discord ID 가져오기
               const discordId = githubToDiscordMap[existingReviewer];
               if (!discordId) {
                 throw new Error(`Discord ID not found for GitHub user: ${existingReviewer}`);
               }
 
-              // 출력 변수 설정
               core.setOutput('reviewer', existingReviewer);
               core.setOutput('discord_id', discordId);
             }
-            
-            
 
       - name: Send Discord Notification
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
         run: |
-          # PR 정보 가져오기
           prTitle="${{ github.event.pull_request.title }}"
           prUser="${{ github.event.pull_request.user.login }}"
           prAction="${{ github.event.action }}"
@@ -141,18 +127,73 @@ jobs:
            MESSAGE="❓ 알 수 없는 PR 이벤트: **${prTitle}** by ${prUser}. **[클릭](${prUrl})**"
           fi
           
-          # JSON 형식으로 메시지 구성
           DATA=$(jq -n \
           --arg content "$MESSAGE" \
           --arg username "$USERNAME" \
           --arg avatar_url "$AVATAR_URL" \
           '{content: $content, username: $username, avatar_url: $avatar_url}')
 
-          # Discord 웹훅으로 메시지 전송
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d "$DATA" "$DISCORD_WEBHOOK_URL")
 
-          # 응답 코드 확인
           if [ "$RESPONSE" -ne 204 ]; then
             echo "Failed to send Discord notification. HTTP Status Code: $RESPONSE"
+            exit 1
+          fi
+
+  scheduled-pr-reminder:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Send Daily Open PR Reminder to Discord
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          USERNAME: "웅? 어엉..? PR 시간이에요!"
+          AVATAR_URL: "https://i.ibb.co/dQKDmNj/test.jpg"
+        run: |
+          PRS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
+
+          PR_COUNT=$(echo "$PRS" | jq length)
+
+          if [ "$PR_COUNT" -eq 0 ]; then
+            echo "열린 PR이 없습니다."
+            exit 0
+          fi
+
+          MESSAGE="**📝 리뷰 요청 리마인더! 오후 8시 17분입니다.**\n"
+
+          for row in $(echo "$PRS" | jq -r '.[] | @base64'); do
+            _jq() {
+              echo "${row}" | base64 --decode | jq -r "${1}"
+            }
+
+            TITLE=$(_jq '.title')
+            NUMBER=$(_jq '.number')
+            URL=$(_jq '.html_url')
+            AUTHOR=$(_jq '.user.login')
+
+            MESSAGE+="\n- [#${NUMBER} ${TITLE}](${URL}) (by ${AUTHOR})"
+          done
+
+          DATA=$(jq -n \
+            --arg content "$MESSAGE" \
+            --arg username "$USERNAME" \
+            --arg avatar_url "$AVATAR_URL" \
+            '{content: $content, username: $username, avatar_url: $avatar_url}')
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -d "$DATA" "$DISCORD_WEBHOOK_URL")
+
+          if [ "$RESPONSE" -ne 204 ]; then
+            echo "Discord 메시지 전송 실패: HTTP $RESPONSE"
             exit 1
           fi

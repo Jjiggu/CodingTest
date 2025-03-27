@@ -6,6 +6,8 @@ on:
 
   schedule:
     - cron: '25 11 * * 1-5'  # 월~금 오후 8시 25분 (KST = UTC+9)
+  
+  workflow_dispatch:
 
 env:
   USERNAME: "웅? 어엉..? 이게 뭐여..! PR이잖아..?"

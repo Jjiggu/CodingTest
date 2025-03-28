@@ -1,4 +1,15 @@
 class Solution {
+    /**
+     * Calculates the maximum sum obtainable by selecting non-adjacent stickers in a circular arrangement.
+     *
+     * <p>If the input array contains a single sticker, its value is returned. Otherwise, the method computes two cases:
+     * one considering the selection where the first sticker is included (thus excluding the last sticker) and another
+     * where the first sticker is excluded (allowing the last sticker to be selected). The maximum sum from these two scenarios is returned.
+     * </p>
+     *
+     * @param sticker an array of integers representing the value of each sticker
+     * @return the maximum sum that can be collected by selecting non-adjacent stickers
+     */
     public int solution(int sticker[]) {
         int answer = 0;
         int len = sticker.length;

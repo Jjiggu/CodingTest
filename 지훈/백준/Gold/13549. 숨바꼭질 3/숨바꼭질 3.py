@@ -5,6 +5,17 @@ MAX = 100001
 dist = [-1] * MAX  # -1로 초기화하여 방문 여부를 체크합니다.
 
 def bfs(start):
+    """
+    Computes the shortest cost to reach the target position from the given start.
+    
+    This function performs a breadth-first search on a number line to determine the minimum cost to
+    reach the global target position K. It explores three moves from the current position: moving to
+    2*x at no additional cost, moving to x-1 with a cost of 1, and moving to x+1 with a cost of 1.
+    A global distance array is updated accordingly, and the function returns the cost once K is reached.
+    
+    Args:
+        start: The starting position from which the search begins.
+    """
     queue = deque([start])
     dist[start] = 0  # 시작점의 거리 초기화
 

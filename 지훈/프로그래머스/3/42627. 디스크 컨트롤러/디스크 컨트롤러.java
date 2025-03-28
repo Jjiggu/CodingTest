@@ -4,6 +4,12 @@ class Job {
     int reqTime;
     int workTime;
 
+    /**
+     * Constructs a new Job with the specified request time and work duration.
+     *
+     * @param reqTime the time at which the job is requested
+     * @param workTime the duration required to complete the job
+     */
     public Job(int reqTime, int workTime) {
         this.reqTime = reqTime;
         this.workTime = workTime;
@@ -11,6 +17,18 @@ class Job {
 }
 
 class Solution {
+    /**
+     * Calculates the average waiting time for processing a set of jobs using a Shortest Job First (SJF) approach.
+     *
+     * <p>The method first sorts the jobs by their request times. It then processes jobs by adding those whose
+     * request times are up to the current time into a priority queue prioritized by work times. If jobs are available,
+     * it executes the one with the shortest work time, updates the current time and the total waiting time, and counts the job
+     * as completed. If no jobs are available, it increments the time until a job is ready. Finally, the method returns the
+     * average waiting time for all jobs.
+     *
+     * @param jobs a 2D array where each sub-array contains two integers representing a job's request time and work time
+     * @return the average waiting time for all jobs
+     */
     public int solution(int[][] jobs) {
         Arrays.sort(jobs, (a, b) -> a[0] - b[0]);  // 요청 시간 기준 정렬
 

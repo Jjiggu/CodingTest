@@ -5,6 +5,12 @@ class Solution {
         int v;
         int cost;
         
+        /**
+         * Constructs a Node representing a graph vertex and the cost to reach it.
+         *
+         * @param v the identifier of the vertex
+         * @param cost the cost associated with reaching the vertex
+         */
         public Node(int v, int cost) {
             this.v = v;
             this.cost = cost;
@@ -13,6 +19,20 @@ class Solution {
     
     static ArrayList<Node>[] graph;
     
+    /**
+     * Computes the shortest path distances from multiple source nodes to a given destination in an undirected graph.
+     * 
+     * <p>The graph is built using the provided roads, each treated as a bidirectional connection with equal cost.
+     * Dijkstra's algorithm is applied in reverse from the destination to determine the minimum distance to every node.
+     * For each source node, the corresponding distance is returned, or -1 if the destination is unreachable.
+     *
+     * @param n the total number of nodes in the graph
+     * @param roads an array of bidirectional roads, each represented as a two-element array of connected nodes
+     * @param sources an array of source nodes for which the shortest distance to the destination is required
+     * @param destination the target node used as the starting point for computing shortest paths
+     * @return an array where each element is the shortest path distance from the corresponding source node to the destination,
+     *         or -1 if the source is unreachable
+     */
     public int[] solution(int n, int[][] roads, int[] sources, int destination) {
         int[] answer = new int[sources.length];
         graph = new ArrayList[n + 1];
@@ -38,6 +58,16 @@ class Solution {
     }
     
     
+    /**
+     * Computes the shortest path distances from the specified start node to all nodes using Dijkstra's algorithm.
+     *
+     * <p>The method initializes all node distances to Integer.MAX_VALUE and updates them by exploring the graph via a priority queue.
+     * If a node is unreachable from the start node, its distance remains Integer.MAX_VALUE.</p>
+     *
+     * @param n the total number of nodes in the graph
+     * @param start the node from which to compute the shortest paths
+     * @return an array containing the minimum distances from the start node to each node in the graph
+     */
     private int[] dijkstra(int n, int start) {
         
         int[] dist = new int[n + 1];

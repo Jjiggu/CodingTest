@@ -1,6 +1,15 @@
 import java.util.*;
 
 class Solution {
+    /**
+     * Finds the shortest contiguous subarray that includes every unique gem type.
+     *
+     * <p>This method uses a sliding window to identify the minimum-length subarray within the provided
+     * array that contains all distinct gems. The resulting indices are 1-indexed.
+     *
+     * @param gems an array of gem types
+     * @return an array of two integers representing the 1-indexed start and end positions of the subarray
+     */
     public int[] solution(String[] gems) {
         int[] answer = new int[2];
         int gemTypes = new HashSet<>(Arrays.asList(gems)).size(); 

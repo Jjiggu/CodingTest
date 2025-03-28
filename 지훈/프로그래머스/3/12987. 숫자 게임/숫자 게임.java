@@ -1,6 +1,19 @@
 import java.util.*;
 
 class Solution {
+    /**
+     * Determines the number of wins for team B in a number game.
+     *
+     * <p>The game pits team A against team B by comparing scores from their respective arrays.
+     * Team A's scores are processed in descending order using a priority queue, while team B's scores
+     * are first sorted in ascending order and stored in a deque. For each highest score from team A,
+     * if team B's highest available score exceeds it, team B wins that round and the winning score is removed.
+     * Otherwise, team B discards its lowest score to minimize losses. The method returns the total win count for team B.</p>
+     *
+     * @param A an array of scores for team A
+     * @param B an array of scores for team B
+     * @return the total number of wins for team B
+     */
     public int solution(int[] A, int[] B) {
     	
         // 점수 역순으로 pq에 넣는다.

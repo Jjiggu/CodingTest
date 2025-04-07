@@ -67,7 +67,6 @@
 - 그리디 (6주차)
 - DP (7주차)
 - 이분탐색 (8주차)
-=============================
 - 시뮬레이션
 - 투포인터
 - 다익스트라
@@ -82,6 +81,7 @@
       <td align="center"><a href="https://github.com/Jjiggu"><img src="https://avatars.githubusercontent.com/u/100821696?v=4" width="100px;" alt=""/><br /><sub><b>Jjiggu</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/jymin99"><img src="https://avatars.githubusercontent.com/u/73513813?v=4" width="100px;" alt=""/><br /><sub><b>jymin99</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/kjchoi1997"><img src="https://avatars.githubusercontent.com/u/72608849?v=4" width="100px;" alt=""/><br /><sub><b>kjchoi1997</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/omjinLTS"><img src="https://avatars.githubusercontent.com/u/54625012?v=4" width="100px;" alt=""/><br /><sub><b>omjinLTS</b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>

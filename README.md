@@ -3,7 +3,7 @@
 > 코딩 테스트 준비를 위한 스터디입니다.
 
 - 기간 : 2024년 11월 ~ 취뽀하는 날까지
-- 스터디 모임 : 목요일 오후 7시 강남역
+- 스터디 모임 : 목요일 오후 6시 건대입구역
 - 참고 사이트: [프로그래머스](https://programmers.co.kr/learn/challenges) [백준](https://www.acmicpc.net)
 - 언어: Python, JAVA, C++
 
@@ -88,7 +88,7 @@
 
 
 
-## 🏃🏼‍♂️ 탈출
+## 🏃🏼‍♂️ 졸업
 <table style="width: 100%;">
   <tbody>
     <tr>

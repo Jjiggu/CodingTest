@@ -23,4 +23,3 @@ def solution(target):
             q.append((score+50,dart+1,single+1))
     return dp[-1]
     
-    return answer

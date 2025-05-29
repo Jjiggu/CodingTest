@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <stack>
 
 using namespace std;
@@ -10,13 +11,18 @@ stack<int> s;
 
 int main(void) {
     cin >> N;
-    for (int i = 1; i <= N; i++) {
+    fill(&ret[0], &ret[0] + 1000001, -1);
+    for (int i = 0; i < N; i++) {
         cin >> seq[i];
         while (s.size() && seq[s.top()] < seq[i]) {
             ret[s.top()] = seq[i];
             s.pop();
         }
-        s.push(seq[i]);
+        s.push(i);
+    }
+
+    for (int i = 0; i < N; i++) {
+        cout << ret[i] << " ";
     }
     return 0;
 }
